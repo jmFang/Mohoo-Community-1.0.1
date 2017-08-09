@@ -1,0 +1,49 @@
+<div class="row login-box">
+    <div class="col-md-3 col-md-offset-4 col-sm-6 col-sm-offset-3 col-xs-8 col-xs-offset-2">
+        <div class="panel panel-info">
+            <div class="panel-heading text-center">用户注册</div>
+            <div class="panel-body">
+                <form action="" class="" role="form" name="mohooRegister" novalidate>
+                    <div class="input-group">
+                        <span for="" class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                        <input type="text" class="form-control" placeholder="用户名" ng-model="userEntity.username"
+                               required ng-minlength="6" ng-maxlength="15">
+                    </div>
+                    <br>
+                    <br>
+                    <div class="">
+                        <span class="error" ng-show="mohooRegister.submitted && mohooRegister.phoneNumber.$error.required"> 手机号不能为空</span>
+                        <span class="error" ng-show="mohooRegister.phoneNumber.$error.pattern">手机号不合法</span>
+                    </div>
+                    <div class="input-group">
+                        <span for="" class="input-group-addon"><i class="glyphicon glyphicon-send"></i></span>
+                        <input type="email" class="form-control" placeholder="请输入邮箱" ng-model="userEntity.email" ng-pattern="emailRegx">
+                    </div>
+                    <br>
+                    <div class="input-group">
+                        <span for="" class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+                        <input type="password" class="form-control" placeholder="请输入密码" ng-model="userEntity.password" ng-pattern="pwdRegx">
+                    </div>
+                    <br>
+                    <div class="input-group">
+                        <span for="" class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+                        <input type="password" class="form-control" placeholder="请再次输入密码" ng-model="userEntity.password2" ng-pattern="pwdRegx">
+                    </div>
+                    <div class="form-group">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" ng-checked="true" ng-model="agree">
+                                <span>同意</span><a href="javascript:;">模乎社区协议</a>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-4 col-md-offset-4 ">
+                            <button class="btn btn-info" ng-click="doRegister();">注册</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
