@@ -1,11 +1,21 @@
 # Mohoo-Community
 
-### npm install
+### 1. npm install
 
-安装依赖
+<P>安装依赖</p>
 
-### npm install gulp
+### 2. npm install gulp
 
-### cmd> gulp
+<p> 安装配置gulp工具 </p>
 
-启动项目， 监听port： localhost:8080
+### 3. run gulp 
+
+<p> host and port： localhost:8080 </p>
+
+## 关于部分文件目录简介
+<h4> src/app/components </h4>
+<P> 放置一切自定义指令或其他组件</p>
+<h4> src/services </h4>
+<p> 放置服务 </p>
+<h4> src/config</h4>
+<p> 放置配置文件，如拦截器等</p>
