@@ -5,20 +5,86 @@
 .mohooHeading {
     margin-bottom: 10px;
 }
-.carouselBorder {
-    border: solid black;
-    padding-top: 5px;
-    padding-bottom: 5px;
-    padding-left: 5px;
-    padding-right: 5px;
+.carouselBody {
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+.home_container {
+    padding: 0px;
+    max-width: 1200px;
+    background: url("../../assets/img/backgrounds/blockimg.jpg") repeat;
+}
+.home_downpart {
+    overflow: hidden;
+    height: 400px;
+    background-color: #f4f4f4;
+}
+.the-more{
+    font-size: 0.5em;
+    padding-top: 10px;
+    color: #ae7700;
+}
+.event_notice_content{
+    border-top: 4px solid #024656;
+    padding-top: 20px;
+    padding-left: 0px;
+    color: #555;
+}
+.event_notice_header {
+    color: #004444;;
+}
+@media (min-width: 1200px){
+    .home_container {
+        width: 1200px;
+    }
 }
 
 .login-box {
     margin-top: 40px;
 }
 
+.list-box {
+    max-width: 1200px;
+    margin: 60px auto;
+    padding:40px 30px;
+    border:1px solid #dcdcdc;
+}
+.totalPage {
+    float: right;
+    color: #333;
+    font-size: 18px;
+}
+.news-list-body {
+
+}
+.list-content {
+
+}
+
 .register-box {
     margin-top: 40px;
+    color:#333333;
+    background-color:#E4E4E4;
+
+}
+body{
+    color:#333333;
+    background-color:#E4E4E4;
+}
+
+.navBarDiv {
+    background: url("../../../assets/img/backgrounds/loginBg2.jpg");
+}
+
+.headInterfaceBg {
+    background-color: #37ffc4;
+    height: 70px;
+    width: 100%;
+}
+.head-interface-div {
+    height: 70px;
+    padding-top:20px ;
+    margin-right: 20%;
 }
 
 /*!

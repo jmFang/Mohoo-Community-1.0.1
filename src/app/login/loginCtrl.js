@@ -2,22 +2,23 @@
  * Created by jiamoufang on 2017/8/5.
  */
 (function(){
-    angular.module('MoHoo')
+    angular.module('Login',[])
         .controller('LoginController', ['$scope', '$location','$http', 'MoHooUtil', function($scope,  $location, $http, MoHooUtil) {
             $scope.userEntity = {
-                username : '',
-                password : '',
+                username : 'sysuygm',
+                password : 'sysuygm',
                 rememberMe : false
             };
 
             return $scope.doLogin = function() {
-                $http.post("http://localhost:7410/api/user/login", {})
-                    .then(function (res) {
-                        $location.path('/home').replace();
+                return $http.post('http://127.0.0.1:7410/api/user/login', {
+                    username:$scope.userEntity.username,
+                    password:$scope.userEntity.password
+                }).then(function (res) {
+                        return $location.path('/home').replace();
                     }, MoHooUtil.processHttpError );
-                console.log($scope.userEntity);
             };
         }]);
 
 
-})();
+}).call(this);

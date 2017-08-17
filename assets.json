@@ -12,6 +12,7 @@
     "./src/assets/plugins/bootstrap/fonts/*.*"
   ],
   "appJs": [
+    "./src/index.module.js",
     "./src/index.js",
     "./src/services/*.js",
     "./src/app/**/*.js"
@@ -23,7 +24,7 @@
     "./src/assets/img/**/*.jpg"
   ],
   "configJs":[
-        "./src/config/config.js"
+        "./src/config/*.js"
   ]
 
 

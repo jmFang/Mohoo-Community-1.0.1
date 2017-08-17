@@ -1,0 +1,24 @@
+<div>
+    <head-interface></head-interface>
+</div>
+<div>
+    <nav-bar></nav-bar>
+</div>
+<div class="container-fluid">
+    <div class="list-box">
+        <h4>
+            {{news.newsTitle}}
+            <p class="totalPage">共{{news.totalPages}}条</p>
+        </h4>
+        <hr>
+        <ul class="list-group news-list-body">
+            <li class="list-group-item" ng-repeat="item in news.newslist track by $index">
+                <a href="#/news/newsdetails"></a>
+                <ul class="list-content">
+                    <li>{{item.title}}</li>
+                    <li>{{item.abstract}}</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</div>

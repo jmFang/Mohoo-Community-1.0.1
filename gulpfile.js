@@ -57,7 +57,9 @@
 
     gulp.task('configJs', function () {
        return gulp.src(assets.configJs)
-            .pipe(gulp.dest('./dest/assets/js/'));
+           .pipe(concat('config.js',{
+               newLine:'\n\n'
+           })).pipe(gulp.dest('./dest/assets/js/'));
     });
     gulp.task('appImg', function () {
         return gulp.src(assets.appImg)
