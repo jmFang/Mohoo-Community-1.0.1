@@ -11,14 +11,23 @@
             <p class="totalPage">共{{news.totalPages}}条</p>
         </h4>
         <hr>
-        <ul class="list-group news-list-body">
-            <li class="list-group-item" ng-repeat="item in news.newslist track by $index">
-                <a href="#/news/newsdetails"></a>
-                <ul class="list-content">
-                    <li>{{item.title}}</li>
-                    <li>{{item.abstract}}</li>
-                </ul>
+        <ul class="news-list-body">
+            <li class="list-item" ng-repeat="item in news.newslist track by $index">
+                <a href="#/news/newsDetails?id={{item.id}}">
+                    <ul class="list-content">
+                        <li class="content-item title">{{item.title}}</li>
+                        <li class="content-item author">{{item.author}}</li>
+                    </ul>
+                    <div class="clearfix"></div>
+                </a>
             </li>
         </ul>
+        <div class="pageIndex">
+            <ul class="pager">
+                <li><button ng-disabled="news.currentPage==news.startPage" ng-click="news.getList(news.currentPage-1)" class="btn btn-info">上一页</button></li>
+                <li><button ng-disabled="news.currentPage==news.endPage" ng-click="news.getList(news.currentPage+1)" class="btn btn-info">下一页</button></li>
+            </ul>
+        </div>
     </div>
 </div>
+<!--这里还有一个页脚未写，用于翻页-->

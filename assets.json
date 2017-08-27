@@ -13,6 +13,7 @@
   ],
   "appJs": [
     "./src/index.module.js",
+    "./src/index.api.js",
     "./src/index.js",
     "./src/services/*.js",
     "./src/app/**/*.js"

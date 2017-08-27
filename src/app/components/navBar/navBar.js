@@ -22,14 +22,11 @@
         function navBarController($location) {
             var vm = this;
             vm.keyword = "";
-            vm.Search = function ($location) {
+            vm.Search = function () {
                 if(vm.keyword == "") {
                     alert("search content can't be empty!");
                 }  else {
-                //$location.path()';
-                    //路由到后台
-                   // $location.path('/login').replace();
-                        //.search({keyword:vm.keyword});
+                    $location.path('/news/newslist').search({keyword:vm.keyword});
                 }
             }
         }

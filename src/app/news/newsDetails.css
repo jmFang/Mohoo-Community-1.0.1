@@ -1,0 +1,49 @@
+.details-box {
+    max-width: 1200px;
+    margin: 60px auto;
+    border: 1px solid #dcdcdc;
+    min-height: 600px;
+    box-shadow: 1px 1px 20px #dcdcdc;
+}
+/*分辨率*/
+@media screen and (min-width: 992px ){
+    .details-box {
+        padding: 80px 60px;
+    }
+}
+@media screen and (max-width:992px ) {
+    .details-box {
+        padding:60px 30px;
+    }
+}
+.details-box h3.m-title {
+    margin: 0;
+    color: #333;
+    font-size: 24px;
+    line-height: 40px;
+    text-align: center;
+}
+.details-box div.s-title {
+    color: #8e8e8e;
+    margin: 10px 0;
+    font-size: 16px;
+    text-align: center;
+}
+.details-box div.description {
+    font-size: 16px;
+    color: #5c5c5c;
+    line-height: 24px;
+    padding: 20px 10px;
+    background-color: #e7c3c3;
+}
+.details-box .description-tag {
+    color: #fff;
+    padding: 2px 5px;
+    margin-right: 5px;
+    background: #7be500;
+}
+.details-box .details-content {
+    font-size: 16px;
+    color: #5c5c5c;
+    line-height: 32px;
+}

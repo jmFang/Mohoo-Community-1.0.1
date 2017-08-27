@@ -6,18 +6,90 @@
     'use strict';
 
     angular
-        .module('MoHoo',['Login','Home','ngRoute','NewList']);
+        .module('MoHoo',['Login','Home','ngRoute','NewList','newsDetails']);
 })();
 
 
 
+/**
+ * Created by jiamoufang on 2017/8/13.
+ * 注册dataService服务，提供各个模块需要的API，向服务器发出请求，将数据返回到各个模块
+ */
+
+(function () {
+    'use strict';
+
+    angular
+        .module('MoHoo')
+        .factory('dataService', dataService);
+
+    function dataService($http, $sce) {
+        /*本地测试*/
+        var baseUrl = 'http://127.0.0.1:7410/';
+        var service = {};
+
+        service.getBaseUrl = function () {
+            return baseUrl;
+        };
+        /*初始化home页面的新闻*/
+        service.getIndex = function (fb, err) {
+            $http.get(baseUrl+'home/init', {
+                headers:{'Content-Type':undefined}
+            }).then(function (res) {
+                fb(res);
+            });
+        };
+        /*获取通知或新闻的详细页面*/
+        service.getNewsDetails = function (id,fb,err) {
+            $http.get(baseUrl+'news/details?id='+id, {
+                headers:{
+                    'Content-Type':undefined
+                }
+            }).then(function (res) {
+                fb(res);/*回调,处理newsDatails.html*/
+            }).catch(function (err) {
+                /*错误处理*/
+            })
+        };
+        /*获取通知或新闻的条目列表
+        * pageIndex是newsList的第几页
+        * category是newsList的类型
+        * pageSize是newsList每页的大小
+        * */
+        service.getNewsList = function (pageIndex, category, fb, err) {
+            $http.get(baseUrl+'news/newsList?pageSize=10&pageIndex='+pageIndex+'&category'+category, {
+                headers:{'Content-Type':undefined}
+            }).then(function (res) {
+                fb(res);
+            }).catch(function (err) {
+                /*错误处理*/
+            })
+        };
+        service.login = function (user, fb) {
+          $http.post(baseUrl+'api/user/login',user)
+              .then(function (res) {
+                  /*回调*/
+                  fb(res);
+              })
+        };
+        service.getURL = baseUrl;
+        return service;
+    }
+
+})();
+
+
+/*
+* 定义项目的所有路由
+* */
 (function() {
     angular.module('MoHoo')
         .config(['$routeProvider', function($routeProvider) {
             return $routeProvider
                 .when('/login', {
                     templateUrl: '/app/login/login.html',
-                    controller: 'LoginController'
+                    controller: 'LoginController',
+                    controllerAs:'login'
                    // access_level:ACCESS_LEVELS.pub
                 })
                 .when('/register', {
@@ -34,6 +106,11 @@
                 .when('/news/newslist', {
                     templateUrl:'/app/news/newslist.html',
                     controller:'NewListController',
+                    controllerAs:'news'
+                })
+                .when('/news/newsDetails',{
+                    templateUrl:'app/news/newsDetails.html',
+                    controller:'NewsDetailsController',
                     controllerAs:'news'
                 })
                 .when('/forum', {
@@ -147,24 +224,28 @@ angular.module('MoHoo')
 
 /**
  * Created by jiamoufang on 2017/8/5.
+ * Home版块的控制器
  */
 (function () {
     angular
         .module('Home',[])
-        .controller('HomeController', ['$scope', '$location', HomeController]);
-    function HomeController($scope, $location) {
+        .controller('HomeController', ['$scope', '$location','dataService', HomeController]);
+    function HomeController($scope, $location,dataService) {
         var vm = this;// 把作用域对象交给vm
         /*以下为测试，正确的数据索取应该到后台，API待写*/
         vm.newslist = [
             {
+                id:"1",
                 "title":"答好友问（一）：今天吃什么",
                 "abstract":"中大食堂有四个，爱吃什么吃什么"
             },
             {
+                id:"2",
                 "title":"答好友问（二）：明天吃什么",
                 "abstract":"今天的事先完成再说"
             },
             {
+                id:"3",
                 "title":"答好友问（三）：后天吃什么",
                 "abstract":"明天能不能活得过还是值得考虑的"
             }
@@ -211,7 +292,43 @@ angular.module('MoHoo')
                 "abstract":"明天能不能活得过还是值得考虑的"
             }
         ];
+        vm.pictures = [
+            {
+                id:"0",
+                url:"../../assets/img/homeCarousel/homeCarousel1.jpg"
+            },
+            {
+                id:"1",
+                url:"../../assets/img/homeCarousel/homeCarousel1.jpg"
+            },
+            {
+                id:"2",
+                url:"../../assets/img/homeCarousel/homeCarousel1.jpg"
+            },
+            {
+                id:"3",
+                url:"../../assets/img/homeCarousel/homeCarousel1.jpg"
+            }
+        ];
+        /*以下为正式向服务器的调用*/
+/*        dataService.getIndex(function (res) {
+            console.log(res);
+/!*            vm.pictures = JSON.parse(res.data.data).sliderList;/!*后台实现此数据结构，sliderList为图片轮播的数组*!/
+            vm.newslist = JSON.parse(res.data.data).activityList;
+            vm.mohooMainNews = JSON.parse(res.data.data).mohooMainNewsList;
+            vm.mohooTalks = JSON.parse(res.data.data).mohooTalksList;
+            vm.mohooUnionAssays = JSON.parse(res.data.data).mohooUnionAssaysList;*!/
+        }, function () {
+            /!*error处理函数*!/
+        });*/
 
+        /*图片或数据向后台请求的路径,传入PATH返回完整的URL*/
+        vm.getUrl = function (str) {
+            if(str)
+                return dataService.getURL + str.substr(1);
+            else
+                return '';
+        }
     }
 })();
 
@@ -220,25 +337,87 @@ angular.module('MoHoo')
  */
 (function(){
     angular.module('Login',[])
-        .controller('LoginController', ['$scope', '$location','$http', 'MoHooUtil', function($scope,  $location, $http, MoHooUtil) {
-            $scope.userEntity = {
-                username : 'sysuygm',
-                password : 'sysuygm',
-                rememberMe : false
-            };
+        .controller('LoginController',['dataService', '$location','$http', 'MoHooUtil', LoginController]);
 
-            return $scope.doLogin = function() {
-                return $http.post('http://127.0.0.1:7410/api/user/login', {
-                    username:$scope.userEntity.username,
-                    password:$scope.userEntity.password
-                }).then(function (res) {
-                        return $location.path('/home').replace();
-                    }, MoHooUtil.processHttpError );
-            };
-        }]);
+       function LoginController(dataService,  $location, $http, MoHooUtil) {
+           var vm = this;
+           vm.userEntity = {
+               username: 'sysuygm',
+               password: 'sysuygm',
+               rememberMe: false
+           };
+           vm.doLogin = function () {
 
+               dataService.login(vm.userEntity, function (res) {
+
+                   if(res.status == "200" || res.status == "204") {
+                       /*登录成功后的处理*/
+                       alert(res.status);
+                       $location.path('/home');
+                   } else {
+                       alert('账号或密码错误！');
+                   }
+               })
+           };
+       }
 
 }).call(this);
+
+/**
+ * Created by jiamoufang on 2017/8/18.
+ * newsDetails.html的控制器
+ */
+(function () {
+    'use strict';
+
+    angular
+        .module('newsDetails',[])
+        .controller('NewsDetailsController',['dataService', '$location', NewsDetailsController]);
+    /**/
+    function NewsDetailsController(dataService, $location) {
+        var vm = this;
+        /*search()返回一个当前url序列化参数的json对象*/
+        var id = $location.search().nid;
+        /*后台应该实现的details对象*/
+        vm.details = {
+            newsTitle : "中大狂人札记",
+            gmtCreate: Date.parse(new Date()),/*获取当前系统的时间戳*/
+            newsAuthor:"言甘木",
+            newsAbstract:"中山大学数据科学与计算机学院2015级本科生",
+            newsContent:"你在南方的艳阳里，大雪纷飞，我在北方的寒夜里，四季如春。"
+            };
+
+        angular.element('.details-content')[0].innerHTML = vm.details.newsContent;
+
+        /*获取后台数据*/
+        dataService.getNewsDetails(id, function (res) {
+            vm.details = res.data.data;
+            angular.element('.details-content')[0].innerHTML = vm.details.newsContent;
+            /*图片插入*/
+            for(var i = 0; i<angular.element('.details-content img').length;i++) {
+                angular.element('.details-content img')[i].setAttribute('height','none');
+            }
+        }, function () {
+            /*错误处理*/
+        });
+        /*调整日期格式*/
+        vm.timeForm = function (time_num) {
+            var time = new Date(parseInt(time_num));
+            var timeString = time.toLocaleString().substr(0,4);
+            if(time.getMonth() < 10) {
+                timeString += "-0" + (time.getMonth() + 1);
+            } else {
+                timeString += "-" + (time.getMonth() + 1);
+            }
+            if(time.getDate() < 10) {
+                timeString += "-0" + time.getDate();
+            } else {
+                timeString += "-" + time.getDate();
+            }
+            return timeString;
+        }
+    }
+})();
 
 /**
  * Created by jiamoufang on 2017/8/13.
@@ -248,23 +427,74 @@ angular.module('MoHoo')
     'use strict';
     angular
         .module('NewList',[])
-        .controller('NewListController', ['$location', '$scope', NewListController]);
-    function NewListController($lcoation, $scope) {
+        .controller('NewListController', ['dataService','$location', '$scope', NewListController]);
+
+    function NewListController(dataService, $location, $scope) {
         var vm = this;
-        vm.newsTitle = "中大狂人";
-        vm.totalPages = 2;
+        //vm.newsTitle = "中大狂人";
+        vm.currentPage = 0;
+        vm.startPages = 0;
+        vm.endPage = 3;
+        vm.totalPages = 3;
         vm.newslist = {};
+        vm.keyword = $location.search().keyword;
+        vm.newsCateg = $location.search().category;
+       // alert(vm.newsCateg);
+        //vm.newsTitle = vm.newsCateg;
+        vm.getList = function (index) {
+            if(vm.keyword == undefined) {
+                if(vm.newsCateg == undefined) {
+                    alert("搜索失败");
+                    $location.path('/home');
+                } else {
+                    if(index == 0) {
+                        vm.newsTitle = vm.newsCateg;
+                    }
+                    dataService.getNewsList(index+1, vm.newsCateg, function (res) {
+                        /*从后台返回的数据包括以下属性
+                        * data:{
+                        *   data:newslistJSON 包括listnews所需数据的对象
+                        *   msg:{
+                        *       count:返回数据的页数
+                        *       }
+                        *   }
+                        * */
+                        vm.newslist = res.data.data;
+                        console.log(vm.newslist);
+                        if(index == 0) {
+                            vm.totalPages = JSON.parse(res.data.msg).count;
+                            vm.endPage = parseInt(vm.totalPage / 10);
+                            if(vm.totalPage % 10 == 0 && vm.totalPage != 0) {
+                                vm.endPage--;
+                            }
+                        }
+                        vm.currentPage = index;
+                    }, function (err) {
+                        /*错误处理*/
+                    })
+                }
+            } else {
+                /*处理搜索功能*/
+
+            }
+        };
+        vm.getList(0);
+
         /*测试，向后台索取数据的API待写*/
-        vm.newslist = [
+/*        vm.newslist = [
             {
+                "id":1,
                 "title":"第一个题目",
+                "author":"SYSUYGM",
                 "abstract":"第一个概述"
             },
             {
+                "id":2,
                 "title":"第二个题目",
+                "author":"SYSUYGM",
                 "abstract":"第二个概述"
             }
-        ];
+        ];*/
     }
 })();
 
@@ -335,6 +565,11 @@ angular.module('MoHoo')
 
 /**
  * Created by jiamoufang on 2017/8/13.
+ */
+
+
+/**
+ * Created by jiamoufang on 2017/8/13.
  * 定义主页头部的登录和注册的接口的指令
  */
 (function(){
@@ -366,11 +601,6 @@ angular.module('MoHoo')
     }
 })();
 
-/**
- * Created by jiamoufang on 2017/8/13.
- */
-
-
 
 
 /**
@@ -397,14 +627,11 @@ angular.module('MoHoo')
         function navBarController($location) {
             var vm = this;
             vm.keyword = "";
-            vm.Search = function ($location) {
+            vm.Search = function () {
                 if(vm.keyword == "") {
                     alert("search content can't be empty!");
                 }  else {
-                //$location.path()';
-                    //·�ɵ���̨
-                   // $location.path('/login').replace();
-                        //.search({keyword:vm.keyword});
+                    $location.path('/news/newslist').search({keyword:vm.keyword});
                 }
             }
         }

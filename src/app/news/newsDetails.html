@@ -1,0 +1,19 @@
+<div>
+    <nav-bar></nav-bar>
+</div>
+
+<div class="container-fluid">
+    <div class="details-box">
+        <h3 class="m-title">{{news.details.newsTitle}}</h3>
+        <div class="s-title">
+            {{news.timeForm(news.details.gmtCreate)}} | {{news.details.newsAuthor}}
+        </div>
+        <div class="description">
+            <span class="description-tag">摘要</span>
+            {{news.details.newsAbstract}}
+        </div>
+        <hr>
+        <!--调用angular操作DOM的API：element()-->
+        <div class="details-content"></div>
+    </div>
+</div>

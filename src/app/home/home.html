@@ -6,27 +6,23 @@
 <div>
     <nav-bar></nav-bar>
 </div>
+
 <div class="container home_container">
         <div class="col-md-8 carouselBody">
             <div id="myCarousel" class="carousel slide carousePadding">
                     <!-- 轮播（Carousel）指标 -->
                 <ol class="carousel-indicators">
-                    <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-                    <li data-target="#myCarousel" data-slide-to="1"></li>
-                    <li data-target="#myCarousel" data-slide-to="2"></li>
+                    <li data-target="#myCarousel" data-slide-to="{{$index}}" ng-repeat="picture in home.pictures"
+                        ng-class="{true:'active',false:''}[$index==0]"></li>
                 </ol>
                     <!-- 轮播（Carousel）项目 -->
-                <div class="carousel-inner">
-                    <div class="item active">
-                        <a href="#">
-                            <img src="../../assets/img/homeCarousel/homeCarousel1.jpg" alt="First slide">
+                <div class="carousel-inner" role="listbox">
+                    <div class="item center-block" ng-repeat="picture in home.pictures" ng-class="{'active':$index==0}">
+                        <a ng-href="#/news/newsDetails?nid={{picture.id}}">
+                            <!--在newsdetails.html的controller中调用API，正式的向服务器请求图片，现有的为测试-->
+                           <!-- <a ng-href="#/news/newsDetails?nid={{picture.id}}"></a>-->
+                            <img ng-src="{{picture.url}}">
                         </a>
-                    </div>
-                    <div class="item">
-                        <img src="../../assets/img/homeCarousel/homeCarousel1.jpg" alt="Second slide">
-                    </div>
-                    <div class="item">
-                        <img src="../../assets/img/homeCarousel/homeCarousel1.jpg" alt="Third slide">
                     </div>
                 </div>
                     <!-- 轮播（Carousel）导航 -->
@@ -43,13 +39,15 @@
             </div>
         </div>
 
-    <div class="col-md-4">
+    <div class="col-md-4 event_notice">
         <h3 class="event_notice_header">模乎社区热点新事
-            <a href="#/news/newslist/" class="the-more pull-right">更多+</a>
+            <!--转到newslist页面，在那里由控制器根据url请求更多-->
+            <a href="#/news/newslist?category=模乎热点新事" class="the-more pull-right">更多+</a>
         </h3>
         <ul class="list-group event_notice_content">
             <li class="list-group-item" ng-repeat="item in home.newslist">
-                <a href="#/home">{{item.title}}</a>
+                <!--转到newsdetails页面，在那里根据nid由其控制器请求全文-->
+                <a href="#/news/newsDetails?nid={{notice.id}}">{{item.title}}</a>
                 <ul>
                     <li>{{item.abstract}}</li>
                 </ul>
@@ -62,39 +60,40 @@
 <div class="container home_downpart">
     <div class="col-md-4 downpart_notice">
         <h3 class="event_notice_header">模乎要闻
-            <a href="#/news/newslist/" class="the-more pull-right">更多+</a>
+            <a href="#/news/newslist?category=模乎要闻" class="the-more pull-right">更多+</a>
         </h3>
         <ul class="list-group event_notice_content">
-            <li class="list-group-item" ng-repeat="item in home.mohooMainNews">
-                <a href="#/home">{{item.title}}</a>
+            <li class="list-group-item" ng-repeat="mainNews in home.mohooMainNews">
+                <!--转到newsdetails页面，在那里由其控制器解决-->
+                <a href="#/news/newsDetails?nid={{mainNews.id}}">{{mainNews.title}}</a>
                 <ul>
-                    <li>{{item.abstract}}</li>
+                    <li>{{mainNews.abstract}}</li>
                 </ul>
             </li>
         </ul>
     </div>
     <div class="col-md-4 home_downpart">
         <h3 class="event_notice_header">模乎说
-            <a href="#/news/newslist/" class="the-more pull-right">更多+</a>
+            <a href="#/news/newslist?category=模乎说" class="the-more pull-right">更多+</a>
         </h3>
         <ul class="list-group event_notice_content">
-            <li class="list-group-item" ng-repeat="item in home.mohooTalks">
-                <a href="#/home">{{item.title}}</a>
+            <li class="list-group-item" ng-repeat="mohooTalk in home.mohooTalks">
+                <a href="#/news/newsDetails?nid={{mohooTalk.id}}">{{mohooTalk.title}}</a>
                 <ul>
-                    <li>{{item.abstract}}</li>
+                    <li>{{mohooTalk.abstract}}</li>
                 </ul>
             </li>
         </ul>
     </div>
     <div class="col-md-4 home_downpart">
         <h3 class="event_notice_header">模联发表
-            <a href="#/news/newslist/" class="the-more pull-right">更多+</a>
+            <a href="#/news/newslist?category=模联发表" class="the-more pull-right">更多+</a>
         </h3>
         <ul class="list-group event_notice_content">
-            <li class="list-group-item" ng-repeat="item in home.mohooUnionAssays">
-                <a href="#/home">{{item.title}}</a>
+            <li class="list-group-item" ng-repeat="assay in home.mohooUnionAssays">
+                <a href="#/news/newsDetails?nid={{assay.id}}">{{assay.title}}</a>
                 <ul>
-                    <li>{{item.abstract}}</li>
+                    <li>{{assay.abstract}}</li>
                 </ul>
             </li>
         </ul>

@@ -24,6 +24,19 @@
     padding-top: 10px;
     color: #ae7700;
 }
+.event_notice {
+    overflow: hidden;
+}
+@media (min-width: 1200px) {
+    .event_notice {
+        height: 420px;
+    }
+}
+@media (min-width: 992px) and (max-width: 1199px) {
+    .event_notice{
+        height: 340px;
+    }
+}
 .event_notice_content{
     border-top: 4px solid #024656;
     padding-top: 20px;
@@ -32,6 +45,10 @@
 }
 .event_notice_header {
     color: #004444;;
+}
+
+.carousel-inner {
+    height: 500px;
 }
 @media (min-width: 1200px){
     .home_container {

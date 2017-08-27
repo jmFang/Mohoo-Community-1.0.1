@@ -3,22 +3,28 @@
  */
 (function(){
     angular.module('Login',[])
-        .controller('LoginController', ['$scope', '$location','$http', 'MoHooUtil', function($scope,  $location, $http, MoHooUtil) {
-            $scope.userEntity = {
-                username : 'sysuygm',
-                password : 'sysuygm',
-                rememberMe : false
-            };
+        .controller('LoginController',['dataService', '$location','$http', 'MoHooUtil', LoginController]);
 
-            return $scope.doLogin = function() {
-                return $http.post('http://127.0.0.1:7410/api/user/login', {
-                    username:$scope.userEntity.username,
-                    password:$scope.userEntity.password
-                }).then(function (res) {
-                        return $location.path('/home').replace();
-                    }, MoHooUtil.processHttpError );
-            };
-        }]);
+       function LoginController(dataService,  $location, $http, MoHooUtil) {
+           var vm = this;
+           vm.userEntity = {
+               username: 'sysuygm',
+               password: 'sysuygm',
+               rememberMe: false
+           };
+           vm.doLogin = function () {
 
+               dataService.login(vm.userEntity, function (res) {
+
+                   if(res.status == "200" || res.status == "204") {
+                       /*登录成功后的处理*/
+                       alert(res.status);
+                       $location.path('/home');
+                   } else {
+                       alert('账号或密码错误！');
+                   }
+               })
+           };
+       }
 
 }).call(this);

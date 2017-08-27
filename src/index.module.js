@@ -6,6 +6,6 @@
     'use strict';
 
     angular
-        .module('MoHoo',['Login','Home','ngRoute','NewList']);
+        .module('MoHoo',['Login','Home','ngRoute','NewList','newsDetails']);
 })();
 

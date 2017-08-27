@@ -1,10 +1,14 @@
+/*
+* 定义项目的所有路由
+* */
 (function() {
     angular.module('MoHoo')
         .config(['$routeProvider', function($routeProvider) {
             return $routeProvider
                 .when('/login', {
                     templateUrl: '/app/login/login.html',
-                    controller: 'LoginController'
+                    controller: 'LoginController',
+                    controllerAs:'login'
                    // access_level:ACCESS_LEVELS.pub
                 })
                 .when('/register', {
@@ -21,6 +25,11 @@
                 .when('/news/newslist', {
                     templateUrl:'/app/news/newslist.html',
                     controller:'NewListController',
+                    controllerAs:'news'
+                })
+                .when('/news/newsDetails',{
+                    templateUrl:'app/news/newsDetails.html',
+                    controller:'NewsDetailsController',
                     controllerAs:'news'
                 })
                 .when('/forum', {
